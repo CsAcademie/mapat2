@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+<body>
+    <h1>[IMG] CsAcademie - Téléchargement des cartes de jeu</h1>
+
+
+    <div id="settings">
+        <h2>Vos préférences</h2>
+
+        Les cartes sont actuellement téléchargées dans : <span id="downloadPath"></span><br />
+        <button id="downloadPathButton">Changer</button>
+        <input id="downloadPathInput" type="file" webkitdirectory style="display: none" />
+
+        <br />
+        <button id="startSync">Go</button>
+    </div>
+
+
+    <h2>Avancement</h2>
+
+    <script src="./worker.js"></script>
+
+</body>
+</html>
