@@ -30,6 +30,11 @@ Worker.prototype = {
     },
 
     launchSync() {
+        if (window.appWorker.downloadPath === undefined || window.appWorker.downloadPath === null
+            || window.appWorker.downloadPath === '' || window.appWorker.downloadPath.length < 2) {
+            alert('Vous devez choisir un chemin valide pour télécharger les cartes.');
+            return;
+        }
         window.appWorker.addLog("Start synchronization");
         window.appWorker.startButton.disabled = true;
         window.appWorker.stopButton.disabled = false;
