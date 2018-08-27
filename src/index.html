@@ -2,14 +2,16 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>CsAcademie - Téléchargeur de maps</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>[IMG] CsAcademie - Téléchargement des cartes de jeu</h1>
+    <h1><img class="logo" src="logo.png"/>CsAcademie</h1>
+    <h2>Téléchargeur de maps</h2>
 
 
-    <div id="settings">
-        <h2>Vos préférences</h2>
+    <div class="box">
+        <h3>Vos préférences</h3>
 
         Les cartes sont actuellement téléchargées dans : <span id="downloadPath"></span><br />
         <button id="downloadPathButton">Changer</button>
@@ -17,10 +19,35 @@
 
         <br />
         <button id="startSync">Go</button>
+        <button id="stopSync" disabled>Stop</button>
     </div>
 
+    <div class="box">
+        <h3>Vérification</h3>
+        <p>
+            Maps à vérifier : <span id="check_max">0</span><br />
+            Map actuelle : <span id="check_current_map"></span>
+        </p>
+    </div>
 
-    <h2>Avancement</h2>
+    <div class="box">
+        <h3>Téléchargement</h3>
+
+        <p>
+            Maps à télécharger : <span id="download_max">0</span><br />
+            Map actuelle : <span id="download_current_map"></span>
+        </p>
+        <div id="dl_progress"><div id="dl_progress_bar"></div></div>
+    </div>
+
+    <div class="box">
+        <h3>Décompression</h3>
+
+        <p>
+            Maps à décompresser : <span id="untar_max">0</span><br />
+            Map actuelle : <span id="untar_current_map"></span>
+        </p>
+    </div>
 
     <script src="./worker.js"></script>
 
