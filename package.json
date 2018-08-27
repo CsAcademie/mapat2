@@ -1,7 +1,7 @@
 {
   "name": "mapat2",
   "productName": "mapat2",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Téléchargeur de maps",
   "main": "src/index.js",
   "scripts": {
