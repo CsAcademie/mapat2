@@ -57,3 +57,17 @@ h3 {
     height: 10px;
     background-color: #4c525f;
 }
+
+button {
+    background-color: #4c525f;
+    color: white;
+    font-weight: bold;
+    padding: 5px;
+    margin: 5px;
+    border: none;
+    box-shadow: 2px 2px 6px #323232;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #4d72a2;
+}
