@@ -18,5 +18,17 @@ module.exports = {
                 certificateFile: './MySPC.pfx'
             }
         }
-]
+    ],
+    publishers: [
+        {
+            name: '@electron-forge/publisher-github',
+            config: {
+                repository: {
+                    owner: 'CsAcademie',
+                    name: 'mapat2'
+                },
+                prerelease: true
+            }
+        }
+    ]
 };

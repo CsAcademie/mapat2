@@ -5,4 +5,5 @@
 
 # Déploiement
 
-- Génération de l'installeur :
+- Génération de l'installeur : `electron-forge make`
+- Publier : `electron-forge publish`
