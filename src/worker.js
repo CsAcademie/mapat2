@@ -100,6 +100,7 @@ Worker.prototype = {
                 }
             } else {
                 window.appWorker.mapsToDownload.push(map);
+                document.getElementById('download_max').innerHTML = (window.appWorker.mapsToDownload.length - 1).toString();
             }
             setTimeout(window.appWorker.checkMaps, 5);
         } else {
@@ -151,6 +152,7 @@ Worker.prototype = {
 
         req.on('end', function() {
             window.appWorker.downloading = false;
+            document.getElementById('download_current_map').innerHTML = '';
         });
     },
 
