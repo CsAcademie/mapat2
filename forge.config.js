@@ -1,34 +1,46 @@
 module.exports = {
-    "makers": [
-        {
-            "name": "@electron-forge/maker-zip"
+    make_targets: {
+        win32: [
+            'squirrel',
+            'zip'
+        ],
+        darwin: [
+            'zip'
+        ],
+        linux: [
+            'deb',
+            'rpm'
+        ]
+    },
+    electronPackagerConfig: {
+        icon: 'logo',
+        appCopyright: 'Copyright (c) CsAcademie',
+        win32metadata: {
+            ProductName: 'mapat2',
+            InternalName: 'mapat2',
+            OriginalFilename: 'mapat2.exe',
+            FileDescription: 'CSGO maps downloader',
+            CompanyName: 'CsAcademie'
         },
-        {
-            name: '@electron-forge/maker-deb',
-            config: {
-                options: {
-                    maintainer: 'Azzod',
-                    homepage: 'https://csacademie.fr'
-                }
-            }
-        },
-        {
-            name: '@electron-forge/maker-squirrel',
-            config: {
-                certificateFile: './MySPC.pfx'
-            }
-        }
-    ],
-    publishers: [
-        {
-            name: '@electron-forge/publisher-github',
-            config: {
-                repository: {
-                    owner: 'CsAcademie',
-                    name: 'mapat2'
-                },
-                prerelease: true
-            }
-        }
-    ]
+        ignore: [
+            /[\\\/](out|)[\\\/]/i,
+            /\.idea/i,
+            /forge\.config\.js$/i,
+            /readme[^\\\/]*$/i,
+        ]
+    },
+    electronWinstallerConfig: {
+        name: 'mapat2'
+    },
+    electronInstallerDebian: {},
+    electronInstallerRedhat: {},
+    github_repository: {
+        owner: 'CsAcademie',
+        name: 'mapat2',
+        draft: true,
+        prerelease: true
+    },
+    windowsStoreConfig: {
+        packageName: ''
+    }
 };
