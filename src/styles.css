@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background-color: #242a35;
+    background-color: #4d72a2;
 }
 
 h1 {
@@ -40,7 +40,7 @@ h3 {
 
 .box {
     width: calc(80% - 40px);
-    background-color: aquamarine;
+    background-color: #FAFAFA;
     margin-right: auto;
     margin-left: auto;
     padding: 20px;
