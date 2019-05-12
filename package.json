@@ -1,7 +1,7 @@
 {
   "name": "mapat2",
   "productName": "mapat2",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Téléchargeur de maps CsAcademie",
   "main": "src/index.js",
   "scripts": {
@@ -30,9 +30,7 @@
     "icon": "./src/logo2.png",
     "win": {
       "target": [
-        "msi",
-        "zip",
-        "nsis"
+        "msi"
       ],
       "publisherName": "Azzod",
       "certificateFile": "MySPC.pfx",
