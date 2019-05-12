@@ -5,6 +5,7 @@
 
 # Déploiement
 
-- Génération de l'installeur : `electron-forge make`
-- Publier (Linux) : `GITHUB_TOKEN=xxx electron-forge publish`
-- Publier (Window) : `$Env:GITHUB_TOKEN="xxx"` puis `electron-forge publish`
+- Vérifier que le certificat est bien présent (MySPC.pfx)
+- Génération de l'installeur : `npm run pack` ou `npm run build`
+- Publier (Linux) : `GH_TOKEN=xxx npm run releas`
+- Publier (Window) : `$Env:GITHUB_TOKEN="xxx"` puis `npm run releas`
