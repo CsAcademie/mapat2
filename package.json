@@ -30,8 +30,10 @@
     "win": {
       "target": [
         "msi",
-        "zip"
+        "zip",
+        "nsis"
       ],
+      "publisherName": "Azzod",
       "certificateFile": "MySPC.pfx",
       "publish": [
         "github"
