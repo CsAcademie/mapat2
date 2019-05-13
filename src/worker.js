@@ -22,6 +22,9 @@ Worker.prototype = {
         this.folderButton.addEventListener('click', window.appWorker.openModalPathFile);
         this.folderInput.addEventListener('change', window.appWorker.changeDownloadPath);
 
+        let versionId = window.require('electron').remote.app.getVersion();
+        document.getElementById('versionId').innerHTML = versionId;
+
         window.appWorker.downloadPath = window.localStorage.getItem("downloadPath");
         window.appWorker.mapUrl = 'https://dl.csacademie.fr/maps';
         document.getElementById('downloadPath').innerHTML = window.appWorker.downloadPath;
