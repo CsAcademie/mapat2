@@ -1,4 +1,5 @@
 const {app, BrowserWindow} = require('electron');
+const { autoUpdater } = require("electron-updater");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -18,7 +19,12 @@ const createWindow = () => {
     mainWindow.loadURL(`file://${__dirname}/index.html`);
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
+
+    const log = require("electron-log");
+    log.transports.file.level = "debug";
+    autoUpdater.logger = log;
+    autoUpdater.checkForUpdatesAndNotify();
 
     // Emitted when the window is closed.
     mainWindow.on('closed', () => {
@@ -50,10 +56,3 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
-
-/* Auto update */
-require('update-electron-app')({
-    repo: 'CsAcademie/mapat2',
-    updateInterval: '1 hour',
-    logger: require('electron-log')
-});
