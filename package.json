@@ -1,7 +1,7 @@
 {
   "name": "mapat2",
   "productName": "mapat2",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Téléchargeur de maps CsAcademie",
   "main": "src/index.js",
   "scripts": {
@@ -27,7 +27,8 @@
   "dependencies": {
     "electron-log": "^3.0.5",
     "electron-updater": "^4.0.6",
-    "md5-file": "^4.0.0"
+    "md5-file": "^4.0.0",
+    "request": "^2.88.0"
   },
   "build": {
     "appId": "mapat2",
