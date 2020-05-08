@@ -19,7 +19,7 @@ const createWindow = () => {
     mainWindow.loadURL(`file://${__dirname}/index.html`);
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
 
     const log = require("electron-log");
     log.transports.file.level = "debug";
