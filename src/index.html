@@ -15,7 +15,6 @@
 
         Les cartes sont actuellement téléchargées dans : <span id="downloadPath"></span><br />
         <button id="downloadPathButton">Choisir le dossier de téléchargement</button>
-        <input id="downloadPathInput" type="file" webkitdirectory style="display: none" />
 
         <br />
         <button id="startSync">Go</button>
@@ -40,13 +39,9 @@
         <div id="dl_progress"><div id="dl_progress_bar"></div></div>
     </div>
 
-    <div class="box" style="display: none">
-        <h3>Décompression</h3>
-
-        <p>
-            Maps à décompresser : <span id="untar_max">0</span><br />
-            Map actuelle : <span id="untar_current_map"></span>
-        </p>
+    <div class="box">
+        <h3>Logs</h3>
+        <p id="logs"></p>
     </div>
 
     <script>
