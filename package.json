@@ -12,7 +12,7 @@
     "publish": "electron-builder --publish always",
     "publish-win": "electron-builder --win --publish always",
     "postinstall": "electron-builder install-app-deps",
-    "release": "build"
+    "release": "electron-builder"
   },
   "repository": "github:CsAcademie/mapat2",
   "keywords": [
@@ -22,7 +22,7 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^8.0",
-    "electron-builder": "^22.0"
+    "electron-builder": "^22.6.0"
   },
   "dependencies": {
     "electron-log": "^4.0",
