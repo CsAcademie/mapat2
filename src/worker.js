@@ -5,22 +5,20 @@ let Worker = function () {
 Worker.prototype = {
     startButton: null,
     downloadPath: null,
-    mapListAjax: null,
     mapsToCheck: [],
     mapsToDownload: [],
     mapsToUntar: [],
     downloading: false,
     mapUrl: null,
+    logs: [],
 
     init: function() {
         this.startButton = document.getElementById('startSync');
         this.stopButton = document.getElementById('stopSync');
         this.folderButton = document.getElementById('downloadPathButton');
-        this.folderInput = document.getElementById('downloadPathInput');
         this.startButton.addEventListener('click', window.appWorker.launchSync);
         this.stopButton.addEventListener('click', window.appWorker.stopSync);
         this.folderButton.addEventListener('click', window.appWorker.openModalPathFile);
-        this.folderInput.addEventListener('change', window.appWorker.changeDownloadPath);
 
         let versionId = window.require('electron').remote.app.getVersion();
         document.getElementById('versionId').innerHTML = versionId;
@@ -41,7 +39,7 @@ Worker.prototype = {
         window.appWorker.addLog("Start synchronization");
         window.appWorker.startButton.disabled = true;
         window.appWorker.stopButton.disabled = false;
-        window.appWorker.getMapList();
+        window.appWorker.getMapList(1);
     },
 
     stopSync() {
@@ -54,31 +52,36 @@ Worker.prototype = {
     },
 
     openModalPathFile() {
-        document.getElementById('downloadPathInput').click();
+        const { dialog } = require('electron').remote
+        let options = {properties:["openDirectory"]}
+        let dir = dialog.showOpenDialogSync(options)
+        window.localStorage.setItem("downloadPath", dir[0]);
+        window.appWorker.downloadPath = dir[0];
+        document.getElementById('downloadPath').innerHTML = dir[0];
     },
 
-    changeDownloadPath() {
-        let path = document.getElementById('downloadPathInput').files[0].path;
-        window.localStorage.setItem("downloadPath", path);
-        window.appWorker.downloadPath = path;
-        document.getElementById('downloadPath').innerHTML = path;
-    },
+    getMapList(page) {
+        const apiUrl = 'https://portal.csacademie.fr/api/maps';
 
-    getMapList() {
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) {
-                window.appWorker.mapListAjax = JSON.parse(this.responseText);
-                for (let i in window.appWorker.mapListAjax.maps) {
-                    if (window.appWorker.mapListAjax.maps.hasOwnProperty(i)) {
-                        let map = window.appWorker.mapListAjax.maps[i];
-                        window.appWorker.mapsToCheck.push(map);
+                let response = JSON.parse(this.responseText);
+                let mapList = response['hydra:member']
+
+                for (let i in mapList) {
+                    if (mapList.hasOwnProperty(i)) {
+                        window.appWorker.mapsToCheck.push(mapList[i]);
                     }
                 }
-                window.appWorker.addLog("Map list OK, check it");
+                if (response['hydra:view'] && response['hydra:view']['hydra:next']) {
+                    window.appWorker.getMapList(page + 1)
+                } else {
+                    window.appWorker.addLog("Map list OK, check it");
+                }
             }
         };
-        xhttp.open("GET", "https://portal.csacademie.fr/ajax/maps/list", true);
+        xhttp.open('GET', apiUrl + '?page=' + page + '&itemsPerPage=50', true);
         xhttp.send();
     },
 
@@ -121,6 +124,11 @@ Worker.prototype = {
 
             window.appWorker.mapsToDownload.splice(0, 1);
             let filePath = window.appWorker.downloadPath + '\\' + map.name; // @TODO LINUX/MAC
+            // if (map.size > 150000000) {
+            //     // bz2
+            // } else {
+            //     // zip
+            // }
             let downloadUrl = window.appWorker.mapUrl + '/' + map.name;
 
             window.appWorker.downloadFile(downloadUrl, filePath);
@@ -166,8 +174,9 @@ Worker.prototype = {
 
     addLog(message) {
         console.log(message);
+        window.appWorker.logs.push(message);
+        document.getElementById('logs').innerHTML = window.appWorker.logs.join('<br />');
     }
-
 };
 window.appWorker = new Worker();
 window.appWorker.init();
