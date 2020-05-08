@@ -62,7 +62,6 @@ Worker.prototype = {
 
     getMapList(page) {
         const apiUrl = 'https://portal.csacademie.fr/api/maps';
-        page=1&itemsPerPage=20&_order[name]=ASC&isDeleted=false&rate[gte]=0&rate[lte]=100
 
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
