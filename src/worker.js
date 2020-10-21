@@ -128,7 +128,6 @@ Worker.prototype = {
         let map = window.appWorker.mapsToDownload[0];
         window.appWorker.mapsToDownload.splice(0, 1);
         window.appWorker.downloading = true;
-        console.log('Start download ' + map.name)
         document.getElementById('download_current_map').innerHTML = map.name;
         document.getElementById('download_max').innerHTML = window.appWorker.mapsToDownload.length.toString();
 
@@ -145,7 +144,7 @@ Worker.prototype = {
         }
         let endCallback = () => {
             window.appWorker.downloading = false;
-            document.getElementById('download_current_map').innerHTML = 'tt';
+            document.getElementById('download_current_map').innerHTML = '';
         }
         window.mapat.downloadFile(fileUrl, filePath, progressCallback, endCallback)
 
