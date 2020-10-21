@@ -1,15 +1,16 @@
 {
   "name": "mapat2",
   "productName": "mapat2",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Téléchargeur de maps CsAcademie",
   "main": "src/index.js",
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder",
+    "dist": "electron-builder -wl",
     "dist-win": "electron-builder --win",
-    "publish": "electron-builder --publish always",
+    "publish": "electron-builder -wl --publish always",
+    "publish-linux": "electron-builder --linux --publish always",
     "publish-win": "electron-builder --win --publish always",
     "postinstall": "electron-builder install-app-deps",
     "release": "electron-builder"
@@ -21,12 +22,12 @@
   "author": "Azzod",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^8.0",
-    "electron-builder": "^22.6.0"
+    "electron": "^10.1.4",
+    "electron-builder": "^22.9.1"
   },
   "dependencies": {
-    "electron-log": "^4.0",
-    "electron-updater": "^4.3.1",
+    "electron-log": "^4.2.4",
+    "electron-updater": "^4.3.5",
     "md5-file": "^5.0.0",
     "request": "^2.88.2"
   },
