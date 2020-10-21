@@ -4,6 +4,7 @@ const { autoUpdater } = require("electron-updater");
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+const path = require("path");
 
 const createWindow = () => {
     // Create the browser window.
@@ -11,15 +12,20 @@ const createWindow = () => {
         width: 900,
         height: 800,
         webPreferences: {
-            nodeIntegration: true
+            worldSafeExecuteJavaScript: true,
+            nodeIntegration: false, // is default value after Electron v5
+            contextIsolation: true, // protect against prototype pollution
+            enableRemoteModule: true, // turn off remote
+            preload: path.join(app.getAppPath(), 'src/preload.js')
         }
     });
 
     // and load the index.html of the app.
-    mainWindow.loadURL(`file://${__dirname}/index.html`);
+    // mainWindow.loadURL(`file://${__dirname}/index.html`);
+    mainWindow.loadFile(path.join(__dirname, "index.html"));
 
     // Open the DevTools.
-    //mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     const log = require("electron-log");
     log.transports.file.level = "debug";
