@@ -34,6 +34,11 @@
   "build": {
     "appId": "mapat2",
     "icon": "./src/logo2.png",
+    "linux": {
+      "target": [
+        "AppImage"
+      ]
+    },
     "win": {
       "target": [
         "nsis"
