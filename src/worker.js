@@ -147,6 +147,7 @@ Worker.prototype = {
         let endCallback = () => {
             window.appWorker.downloading = false
             document.getElementById('download_current_map').innerHTML = ''
+            document.getElementById('dl_progress_bar').style.width = '0%'
             window.appWorker.mapsToUnTar.push({filePath, type, name: map.name})
         }
         window.mapat.downloadFile(fileUrl, filePath, progressCallback, endCallback)
