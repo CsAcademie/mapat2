@@ -84,7 +84,7 @@ Worker.prototype = {
         };
         xHttp.open(
           'GET',
-          window.appWorker.apiUrl + '?page=' + page + '&itemsPerPage=50&isDeleted=false&_order[id]=DESC',
+          window.appWorker.apiUrl + '?page=' + page + '&itemsPerPage=50&isDeleted=false&_order[id]=ASC',
           true
         );
         xHttp.send();
@@ -172,7 +172,7 @@ Worker.prototype = {
         window.appWorker.mapsToUnTar.splice(0, 1);
         window.appWorker.unTaring = true;
         document.getElementById('un_tar_current_map').innerHTML = map.name;
-        document.getElementById('un_tar_max').innerHTML = window.appWorker.mapsToDownload.length.toString()
+        document.getElementById('un_tar_max').innerHTML = window.appWorker.mapsToUnTar.length.toString()
 
         let endCallback = () => {
             if (window.mapat.isFileExist(map.filePath)) {
