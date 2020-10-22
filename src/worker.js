@@ -114,36 +114,6 @@ Worker.prototype = {
         setTimeout(window.appWorker.checkMaps, 5);
     },
 
-    unTarMap() {
-        if (window.appWorker.unTaring) {
-            setTimeout(window.appWorker.unTarMap, 1000);
-            return
-        }
-
-        if (window.appWorker.mapsToUnTar.length === 0) {
-            document.getElementById('un_tar_current_map').innerHTML = '';
-            document.getElementById('un_tar_max').innerHTML = window.appWorker.mapsToUnTar.length.toString();
-            setTimeout(window.appWorker.unTarMap, 1000);
-            return
-        }
-
-        let map = window.appWorker.mapsToUnTar[0];
-        let outputPath = window.appWorker.downloadPath
-        window.appWorker.mapsToUnTar.splice(0, 1);
-        window.appWorker.unTaring = true;
-        document.getElementById('un_tar_current_map').innerHTML = map.name;
-        document.getElementById('un_tar_max').innerHTML = window.appWorker.mapsToDownload.length.toString()
-
-        let endCallback = () => {
-            console.log('Finish untar')
-            window.appWorker.unTaring = false
-            document.getElementById('un_tar_current_map').innerHTML = ''
-        }
-
-        window.mapat.unTarFile(map.type, map.filePath, map.name, outputPath, endCallback)
-        setTimeout(window.appWorker.unTarMap, 1000);
-    },
-
     downloadMap() {
         if (window.appWorker.downloading) {
             setTimeout(window.appWorker.downloadMap, 1000);
@@ -182,6 +152,38 @@ Worker.prototype = {
         window.mapat.downloadFile(fileUrl, filePath, progressCallback, endCallback)
 
         setTimeout(window.appWorker.downloadMap, 1000);
+    },
+
+    unTarMap() {
+        if (window.appWorker.unTaring) {
+            setTimeout(window.appWorker.unTarMap, 1000);
+            return
+        }
+
+        if (window.appWorker.mapsToUnTar.length === 0) {
+            document.getElementById('un_tar_current_map').innerHTML = '';
+            document.getElementById('un_tar_max').innerHTML = window.appWorker.mapsToUnTar.length.toString();
+            setTimeout(window.appWorker.unTarMap, 1000);
+            return
+        }
+
+        let map = window.appWorker.mapsToUnTar[0];
+        let outputPath = window.appWorker.downloadPath
+        window.appWorker.mapsToUnTar.splice(0, 1);
+        window.appWorker.unTaring = true;
+        document.getElementById('un_tar_current_map').innerHTML = map.name;
+        document.getElementById('un_tar_max').innerHTML = window.appWorker.mapsToDownload.length.toString()
+
+        let endCallback = () => {
+            if (window.mapat.isFileExist(map.filePath)) {
+                window.mapat.deleteFile(map.filePath)
+            }
+            window.appWorker.unTaring = false
+            document.getElementById('un_tar_current_map').innerHTML = ''
+        }
+
+        window.mapat.unTarFile(map.type, map.filePath, map.name, outputPath, endCallback)
+        setTimeout(window.appWorker.unTarMap, 1000);
     },
 
     addLog(type, message) {

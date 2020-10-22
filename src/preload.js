@@ -63,8 +63,6 @@ contextBridge.exposeInMainWorld(
       let received_bytes = 0;
       let total_bytes = 0;
 
-      console.log(fileUrl)
-      console.log(targetPath)
       let req = request({
         method: 'GET',
         uri: fileUrl
