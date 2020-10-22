@@ -92,6 +92,8 @@ Worker.prototype = {
 
     checkMaps() {
         if (window.appWorker.mapsToCheck.length === 0) {
+            document.getElementById('check_current_map').innerHTML = '';
+
             setTimeout(window.appWorker.checkMaps, 1000);
             return;
         }
@@ -110,7 +112,6 @@ Worker.prototype = {
             window.appWorker.mapsToDownload.push(map);
         }
 
-        document.getElementById('check_current_map').innerHTML = '';
         setTimeout(window.appWorker.checkMaps, 5);
     },
 
