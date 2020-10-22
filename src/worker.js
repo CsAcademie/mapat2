@@ -84,7 +84,7 @@ Worker.prototype = {
         };
         xHttp.open(
           'GET',
-          window.appWorker.apiUrl + '?page=' + page + '&itemsPerPage=50&isDeleted=false&_order[id]=ASC',
+          window.appWorker.apiUrl + '?page=' + page + '&itemsPerPage=50&isDeleted=false&_order[id]=DESC',
           true
         );
         xHttp.send();
