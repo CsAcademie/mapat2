@@ -110,7 +110,7 @@ Worker.prototype = {
             window.appWorker.mapsToDownload.push(map);
         }
 
-        document.getElementById('download_max').innerHTML = window.appWorker.mapsToDownload.length.toString();
+        document.getElementById('check_current_map').innerHTML = '';
         setTimeout(window.appWorker.checkMaps, 5);
     },
 
