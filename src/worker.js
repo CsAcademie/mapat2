@@ -84,7 +84,7 @@ Worker.prototype = {
         };
         xHttp.open(
           'GET',
-          window.appWorker.apiUrl + '?page=' + page + '&itemsPerPage=50&isDeleted=false&_order[id]=DESC',
+          window.appWorker.apiUrl + '?page=' + page + '&itemsPerPage=50&isDeleted=false&_order[played]=ASC',
           true
         );
         xHttp.send();
@@ -111,7 +111,7 @@ Worker.prototype = {
             window.appWorker.addLog('INFO', 'Mise à jour de la carte ' + map.name);
             window.appWorker.mapsToDownload.push(map);
         }
-
+        document.getElementById('download_max').innerHTML = window.appWorker.mapsToDownload.length.toString();
         setTimeout(window.appWorker.checkMaps, 5);
     },
 

@@ -8,7 +8,7 @@ const path = require('path')
 const request = require('request')
 const DecompressZip = require('decompress-zip')
 const decompress = require('decompress');
-const decompressBzip2 = require('decompress-bzip2');
+const decompressBzip2 = require('decompress-bzip2')
 
 contextBridge.exposeInMainWorld(
   "mapat", {
@@ -39,7 +39,7 @@ contextBridge.exposeInMainWorld(
       return path.sep
     },
 
-    unTarFile: (type, filePath, mapName, outputPath, endCallback) => {
+    unTarFile: async (type, filePath, mapName, outputPath, endCallback) => {
       if (type === 'zip') {
         let unZipper = new DecompressZip(filePath)
 
