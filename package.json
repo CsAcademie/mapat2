@@ -1,7 +1,7 @@
 {
   "name": "mapat2",
   "productName": "mapat2",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Téléchargeur de maps CsAcademie",
   "main": "src/index.js",
   "scripts": {
@@ -26,6 +26,9 @@
     "electron-builder": "^22.9.1"
   },
   "dependencies": {
+    "decompress": "^4.2.1",
+    "decompress-bzip2": "^4.0.0",
+    "decompress-zip": "^0.2.2",
     "electron-log": "^4.2.4",
     "electron-updater": "^4.3.5",
     "md5-file": "^5.0.0",
@@ -34,6 +37,11 @@
   "build": {
     "appId": "mapat2",
     "icon": "./src/logo2.png",
+    "linux": {
+      "target": [
+        "AppImage"
+      ]
+    },
     "win": {
       "target": [
         "nsis"
