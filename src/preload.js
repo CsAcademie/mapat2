@@ -6,6 +6,9 @@ const fs = require('fs')
 const md5File = require('md5-file')
 const path = require('path')
 const request = require('request')
+const DecompressZip = require('decompress-zip')
+const decompress = require('decompress');
+const decompressBzip2 = require('decompress-bzip2')
 
 contextBridge.exposeInMainWorld(
   "mapat", {
@@ -34,6 +37,26 @@ contextBridge.exposeInMainWorld(
 
     getSystemPathSeparator: () => {
       return path.sep
+    },
+
+    unTarFile: async (type, filePath, mapName, outputPath, endCallback) => {
+      if (type === 'zip') {
+        let unZipper = new DecompressZip(filePath)
+
+        unZipper.on('extract', endCallback)
+        unZipper.extract({path: outputPath});
+      } else {
+        decompress(
+          filePath,
+          outputPath,
+          {
+            plugins: [decompressBzip2({path: mapName})]
+          }
+        ).then(() => {
+          fs.chmodSync(outputPath + path.sep + mapName, '664');
+          endCallback()
+        })
+      }
     },
 
     downloadFile: (fileUrl, targetPath, progressCallback, endCallback) => {
