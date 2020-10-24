@@ -3,6 +3,7 @@ let Worker = function () {};
 Worker.prototype = {
     startButton: null,
     downloadPath: null,
+    downloadCompressed: null,
     mapsToCheck: [],
     mapsToDownload: [],
     downloading: false,
@@ -16,6 +17,7 @@ Worker.prototype = {
         this.startButton = document.getElementById('startSync');
         this.stopButton = document.getElementById('stopSync');
         this.folderButton = document.getElementById('downloadPathButton');
+        this.downloadCompressed = document.getElementById('downloadCompressed');
         this.startButton.addEventListener('click', window.appWorker.launchSync);
         this.stopButton.addEventListener('click', window.appWorker.stopSync);
         this.folderButton.addEventListener('click', window.appWorker.chooseMapFolder);
@@ -129,9 +131,16 @@ Worker.prototype = {
         }
 
         let map = window.appWorker.mapsToDownload[0];
-        let type = (map.size > 150000000) ? 'zip' : 'bz2'
-        let filePath = window.appWorker.downloadPath + window.mapat.getSystemPathSeparator() + map.name + '.' + type
-        let fileUrl = window.appWorker.mapUrl + '/' + map.name + '.' + type
+        let compressed = this.downloadCompressed.checked === true
+        let filePath = window.appWorker.downloadPath + window.mapat.getSystemPathSeparator() + map.name
+        let fileUrl = window.appWorker.mapUrl + '/' + map.name
+        let type = ''
+
+        if (compressed) {
+            type = (map.size > 150000000) ? 'zip' : 'bz2'
+            filePath += '.' + type
+            fileUrl += '.' + type
+        }
 
         window.appWorker.mapsToDownload.splice(0, 1);
         window.appWorker.downloading = true;
@@ -149,7 +158,9 @@ Worker.prototype = {
             window.appWorker.downloading = false
             document.getElementById('download_current_map').innerHTML = ''
             document.getElementById('dl_progress_bar').style.width = '0%'
-            window.appWorker.mapsToUnTar.push({filePath, type, name: map.name})
+            if (compressed) {
+                window.appWorker.mapsToUnTar.push({filePath, type, name: map.name})
+            }
         }
         window.mapat.downloadFile(fileUrl, filePath, progressCallback, endCallback)
 

@@ -1,6 +1,6 @@
 ### 1.3.0 - UNRELEASED
 
-- Les cartes sont maintenant téléchargées en version compressées
+- Ajout d'une option pour télécharger les cartes en version compressé
 
 ### 1.2.0 - 2020-10-21
 
