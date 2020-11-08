@@ -3,6 +3,7 @@ let Worker = function () {};
 Worker.prototype = {
     startButton: null,
     downloadPath: null,
+    deleteButton: null,
     downloadCompressed: null,
     mapsToCheck: [],
     mapsToDownload: [],
@@ -12,14 +13,17 @@ Worker.prototype = {
     mapUrl: null,
     logs: [],
     apiUrl: 'https://portal.csacademie.fr/api/maps',
+    mapDeleted: 0,
 
     init: function() {
         this.startButton = document.getElementById('startSync');
         this.stopButton = document.getElementById('stopSync');
+        this.deleteButton = document.getElementById('deleteMaps');
         this.folderButton = document.getElementById('downloadPathButton');
         this.downloadCompressed = document.getElementById('downloadCompressed');
         this.startButton.addEventListener('click', window.appWorker.launchSync);
         this.stopButton.addEventListener('click', window.appWorker.stopSync);
+        this.deleteButton.addEventListener('click', function () { window.appWorker.deleteMaps(1) });
         this.folderButton.addEventListener('click', window.appWorker.chooseMapFolder);
 
         document.getElementById('versionId').innerHTML = window.mapat.getVersion();
@@ -86,7 +90,41 @@ Worker.prototype = {
         };
         xHttp.open(
           'GET',
-          window.appWorker.apiUrl + '?page=' + page + '&itemsPerPage=50&isDeleted=false&_order[played]=ASC',
+          window.appWorker.apiUrl + '?page=' + page + '&itemsPerPage=50&isDeleted=false&_order[played]=ASC&_order[id]=DESC',
+          true
+        );
+        xHttp.send();
+    },
+
+    deleteMaps(page) {
+        window.appWorker.addLog("INFO", "Vérification des cartes à supprimer")
+        let xHttp = new XMLHttpRequest();
+        xHttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                let response = JSON.parse(this.responseText);
+                let mapList = response['hydra:member']
+
+                for (let i in mapList) {
+                    if (mapList.hasOwnProperty(i)) {
+                        let map = mapList[i]
+                        let filePath = window.appWorker.downloadPath + window.mapat.getSystemPathSeparator() + map.name;
+                        if (window.mapat.isFileExist(filePath)) {
+                            window.mapat.deleteFile(filePath)
+                        }
+                    }
+                }
+
+                if (response['hydra:view'] && response['hydra:view']['hydra:next']) {
+                    window.appWorker.deleteMaps(page + 1)
+                } else {
+                    window.appWorker.addLog("INFO",window.appWorker.mapDeleted + " cartes supprimées")
+                    window.appWorker.mapDeleted = 0
+                }
+            }
+        };
+        xHttp.open(
+          'GET',
+          window.appWorker.apiUrl + '?page=' + page + '&itemsPerPage=50&isDeleted=true',
           true
         );
         xHttp.send();
