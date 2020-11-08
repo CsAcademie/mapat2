@@ -7,8 +7,8 @@
 
 - Vérifier que le certificat est bien présent (MySPC.pfx)
 - Génération de l'installeur : `npm run pack` ou `npm run build`
-- Publier (Linux) : `GH_TOKEN=xxx npm run releas`
-- Publier (Window) : `$Env:GITHUB_TOKEN="xxx"` puis `npm run release`
+- Publier (Linux) : `GH_TOKEN=xxx npm run publish-linux`
+- Publier (Window) : `$Env:GITHUB_TOKEN="xxx"` puis `npm run publish-win`
 
 
 ## Publication
