@@ -1,3 +1,7 @@
+### 1.4.1 - 2020-11-09
+
+- Correction de l'affichage du nombre de cartes supprimées
+
 ### 1.4.0 - 2020-11-08
 
 - Ajout d'une option permettant de supprimer les anciennes cartes

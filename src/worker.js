@@ -97,7 +97,9 @@ Worker.prototype = {
     },
 
     deleteMaps(page) {
-        window.appWorker.addLog("INFO", "Vérification des cartes à supprimer")
+        if (page === 1) {
+            window.appWorker.addLog("INFO", "Vérification des cartes à supprimer")
+        }
         let xHttp = new XMLHttpRequest();
         xHttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) {
@@ -109,6 +111,7 @@ Worker.prototype = {
                         let map = mapList[i]
                         let filePath = window.appWorker.downloadPath + window.mapat.getSystemPathSeparator() + map.name;
                         if (window.mapat.isFileExist(filePath)) {
+                            window.appWorker.mapDeleted++
                             window.mapat.deleteFile(filePath)
                         }
                     }
