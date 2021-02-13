@@ -1,3 +1,8 @@
+### 1.5.0 - 2021-02-13
+
+- Ajout du nom des cartes supprimées dans les logs
+- Mise à jour des dépendances
+
 ### 1.4.1 - 2020-11-09
 
 - Correction de l'affichage du nombre de cartes supprimées
