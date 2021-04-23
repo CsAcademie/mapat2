@@ -1,7 +1,5 @@
-const {
-  contextBridge,
-  remote
-} = require("electron")
+const { contextBridge, remote } = require("electron")
+
 const fs = require('fs')
 const md5File = require('md5-file')
 const path = require('path')
@@ -18,9 +16,7 @@ contextBridge.exposeInMainWorld(
     },
 
     openModalPathFile: () => {
-      let options = {properties:["openDirectory"]}
-
-      return remote.dialog.showOpenDialogSync(options)
+      return remote.dialog.showOpenDialogSync( { properties:["openDirectory"] })
     },
 
     isFileExist: (filePath) => {

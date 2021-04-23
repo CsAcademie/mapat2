@@ -15,7 +15,7 @@ const createWindow = () => {
             worldSafeExecuteJavaScript: true,
             nodeIntegration: false, // is default value after Electron v5
             contextIsolation: true, // protect against prototype pollution
-            enableRemoteModule: true, // turn off remote
+            enableRemoteModule: true, // turn on remote
             preload: path.join(app.getAppPath(), 'src/preload.js')
         }
     });
