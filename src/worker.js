@@ -39,12 +39,18 @@ Worker.prototype = {
     launchSync() {
         if (window.appWorker.downloadPath === undefined || window.appWorker.downloadPath === null
             || window.appWorker.downloadPath === '' || window.appWorker.downloadPath.length < 2) {
-            window.appWorker.addLog('ERROR', 'Mauvaise destination pour télécharger les cartes')
+            window.appWorker.addLog('ERROR', 'Mauvaise destination pour télécharger les cartes.')
             alert('Vous devez choisir un chemin valide pour télécharger les cartes.')
             return
         }
 
-        window.appWorker.addLog('INFO', 'Début de la vérification des cartes')
+        if (!window.mapat.isFileExist(window.appWorker.downloadPath)) {
+            window.appWorker.addLog('ERROR', 'Le dossier de téléchargement est introuvable.')
+            alert('Le dossier de téléchargement est introuvable.')
+            return
+        }
+
+        window.appWorker.addLog('INFO', 'Début de la vérification des cartes.')
         window.appWorker.startButton.disabled = true
         window.appWorker.stopButton.disabled = false
         window.appWorker.getMapList(1)
