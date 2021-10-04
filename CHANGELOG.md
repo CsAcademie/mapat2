@@ -1,3 +1,11 @@
+### 1.7.0 - 2021-10-04
+
+- Mise à jour des dépendances
+
+### 1.7.0 - 2021-08-24
+
+- Mise à jour vers electron 13
+
 ### 1.6.0 - 2021-04-23
 
 - Mise à jour des dépendances
