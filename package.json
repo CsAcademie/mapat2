@@ -1,7 +1,7 @@
 {
   "name": "mapat2",
   "productName": "mapat2",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Téléchargeur de cartes CsAcademie",
   "main": "src/index.js",
   "scripts": {
@@ -22,7 +22,7 @@
   "author": "Azzod",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^13.2.2",
+    "electron": "^13.5.1",
     "electron-builder": "^22.11.7"
   },
   "dependencies": {
