@@ -1,6 +1,6 @@
 {
   "name": "mapat2",
-  "version": "dev",
+  "version": "2.0.0",
   "description": "Téléchargeur de cartes CsAcademie",
   "main": "main.js",
   "scripts": {
