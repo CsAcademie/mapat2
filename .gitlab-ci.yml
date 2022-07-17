@@ -25,5 +25,6 @@ build:
   script:
 #    - npm version $CI_COMMIT_TAG
     - npm install
+    - cat "$PRIVATE_KEY" > "privateKey.pfx"
     - npm run dist
 
