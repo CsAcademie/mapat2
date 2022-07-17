@@ -3,3 +3,4 @@ out
 .idea
 MySPC.pfx
 dist/
+privateKey.pfx

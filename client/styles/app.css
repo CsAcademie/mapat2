@@ -82,10 +82,10 @@ h2 {
 }
 
 .actionButton {
-    background-color: #2196F3;
+    background-color: #ffc107;
+    color: #333;
     width: 250px;
     border: none;
-    color: white;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
@@ -96,5 +96,6 @@ h2 {
 
 .actionButton:disabled {
     background-color: #444444;
+    color: #999;
     cursor: not-allowed;
 }

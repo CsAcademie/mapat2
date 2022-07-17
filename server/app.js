@@ -26,7 +26,9 @@ const mapDownloaderWorker = new Worker(path.join(__dirname, 'workers', 'mapDownl
 // Expose api
 contextBridge.exposeInMainWorld('electronAPI', {
   initialisation: () => {
+    document.getElementById('mapat_version').innerHTML = process.env.npm_package_version
     downloadFolderPath = window.localStorage.getItem('downloadPath')
+
     refreshDownloadFolderPath()
   },
   openMapDownloadFolder: () => {
@@ -43,7 +45,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
 // Functions
 startSynchronization = function () {
-  console.log('Start')
   const mapVerificationHTML = document.getElementById('map_verification')
   const mapDownloadingHTML = document.getElementById('map_downloading')
 

@@ -1,5 +1,6 @@
 const { app, BrowserWindow, dialog, ipcMain } = require('electron')
 const path = require('path')
+const { autoUpdater } = require("electron-updater")
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -35,6 +36,12 @@ app.whenReady().then(() => {
       createWindow()
     }
   })
+
+  if (window.localStorage.getItem('updateChannel') === 'beta') {
+    autoUpdater.channel = 'beta'
+  }
+
+  autoUpdater.checkForUpdatesAndNotify();
 })
 
 app.on('window-all-closed', () => {
