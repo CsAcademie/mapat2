@@ -18,7 +18,7 @@ build:
     - docker-executor
 #  only: tags
   when: manual
-  image: electronuserland/builder:wine
+  image: electronuserland/builder:16-wine
 #  variables:
 #    ELECTRON_CACHE: /root/.cache/electron
 #    ELECTRON_BUILDER_CACHE: /root/.cache/electron-builder
