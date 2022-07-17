@@ -27,6 +27,6 @@ build:
     - npm install
     - pwd
     - cat "$PRIVATE_KEY" > "$(pwd)/privateKey.pfx"
-    - ls
+    - ls -la
     - npm run dist
 
