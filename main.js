@@ -5,6 +5,12 @@ const createWindow = () => {
   const win = new BrowserWindow({
     width: 950,
     height: 780,
+    autoHideMenuBar: true,
+    titleBarStyle: 'hidden',
+    titleBarOverlay: {
+      color: '#003186',
+      symbolColor: '#FFFFFF'
+    },
     webPreferences: {
       preload: path.join(__dirname, 'server/app.js'),
       nodeIntegrationInWorker: true
