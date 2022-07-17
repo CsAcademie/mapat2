@@ -3,8 +3,8 @@ include:
   - template: Security/SAST.gitlab-ci.yml
 
 stages:
-  - test
   - build
+  - test
 
 sast:
   variables:
@@ -25,6 +25,8 @@ build:
   script:
 #    - npm version $CI_COMMIT_TAG
     - npm install
+    - pwd
     - cat "$PRIVATE_KEY" > "$(pwd)/privateKey.pfx"
+    - ls
     - npm run dist
 
