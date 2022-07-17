@@ -1,0 +1,100 @@
+body {
+    background-color: #000;
+    margin: 0;
+    color: white;
+}
+
+h2 {
+    color: #003186;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#header {
+    width: 100%;
+    background-color: #003186;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    color: white;
+}
+
+#header img {
+    height: 80px;
+    margin-right: 20px;
+}
+
+#options, #synchronization {
+    width: calc(100% - 40px);
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.block_container {
+    width: calc(100% - 20px);
+    display: flex;
+    flex-direction: row;
+    padding-left: 10px;
+    padding-right: 10px;
+    justify-content: space-between;
+}
+
+.block {
+    background-color: #333;
+    padding: 10px;
+    margin: 10px;
+    min-width: 250px;
+}
+
+.block .title {
+    color: #2196F3;
+    font-size: 22px;
+}
+
+.block span {
+    font-size: 14px;
+}
+
+.imgButton {
+    height: 24px;
+    color: #2196F3;
+    cursor: pointer;
+    filter: invert(86%) sepia(33%) saturate(3718%) hue-rotate(351deg) brightness(99%) contrast(104%);
+}
+
+.centered {
+    text-align: center;
+}
+
+.separator {
+    height: 20px;
+}
+
+#downloadingMap, #checkingMap {
+    font-size: 14px;
+    color: white;
+    height: 20px;
+    margin-top: 5px;
+}
+
+#download_folder_path {
+    word-break: break-all;
+}
+
+.actionButton {
+    background-color: #2196F3;
+    width: 250px;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.actionButton:disabled {
+    background-color: #444444;
+    cursor: not-allowed;
+}

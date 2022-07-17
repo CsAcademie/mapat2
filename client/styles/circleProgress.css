@@ -1,0 +1,37 @@
+.wrap-circles {
+    display: flex;
+    min-height: 100vh;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+    background: #000;
+}
+
+.circle {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: #444;
+    overflow: hidden;
+}
+
+.circle .inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 115px;
+    height: 115px;
+    background: #000;
+    border-radius: 50%;
+    font-size: 1.85em;
+    font-weight: 300;
+    color: #2196F3;
+}
