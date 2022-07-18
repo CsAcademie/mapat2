@@ -11,10 +11,7 @@
     "publish-linux": "electron-builder --linux --publish always",
     "publish-win": "electron-builder --win --publish always"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/CsAcademie/mapat2.git"
-  },
+  "repository": "github:CsAcademie/mapat2",
   "keywords": [
     "CsAcademie"
   ],
