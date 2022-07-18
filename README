@@ -6,3 +6,8 @@
 ### Déploiement
 
 - npm install
+- Linux: Directement via CI
+- Windows:
+- * Vérifier que privateKey.pfx est présent
+- * `$Env:GITHUB_TOKEN="xxx"` puis `npm run publish-win`
+- * ou `GH_TOKEN=xxx npm run publish-win`

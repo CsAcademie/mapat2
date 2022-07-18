@@ -16,12 +16,9 @@ build-linux:
   stage: build
   tags:
     - docker-executor
-#  only: tags
+  only: tags
   when: manual
   image: electronuserland/builder:16
-#  variables:
-#    ELECTRON_CACHE: /root/.cache/electron
-#    ELECTRON_BUILDER_CACHE: /root/.cache/electron-builder
   script:
     - npm version $CI_COMMIT_TAG
     - npm install
