@@ -21,7 +21,6 @@ const createWindow = () => {
 
   ipcMain.handle('search-beta-updates', () => {
     autoUpdater.channel = 'beta'
-    autoUpdater.allowPrerelease();
     autoUpdater.checkForUpdatesAndNotify();
   });
 
