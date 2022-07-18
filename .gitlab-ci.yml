@@ -18,7 +18,7 @@ build:
     - docker-executor
 #  only: tags
   when: manual
-  image: electronuserland/builder:16-wine
+  image: electronuserland/builder:wine
 #  variables:
 #    ELECTRON_CACHE: /root/.cache/electron
 #    ELECTRON_BUILDER_CACHE: /root/.cache/electron-builder
@@ -27,7 +27,6 @@ build:
     - npm install
     - pwd
     - cat "$PRIVATE_KEY" > "$(pwd)/privateKey.pfx"
-    - chmod 666 privateKey.pfx
     - ls -la
     - npm run dist
 
