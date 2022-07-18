@@ -16,11 +16,11 @@ build-linux:
   stage: build
   tags:
     - docker-executor
-  only: tags
+  only:
+    - tags
   when: manual
   image: electronuserland/builder:16
   script:
     - npm version $CI_COMMIT_TAG
     - npm install
     - npm run publish-linux
-
