@@ -7,7 +7,9 @@
     "start": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder -wl",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "publish-linux": "electron-builder --linux --publish always",
+    "publish-win": "electron-builder --win --publish always"
   },
   "repository": {
     "type": "git",
