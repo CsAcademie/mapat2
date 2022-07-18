@@ -7,11 +7,6 @@ const createWindow = () => {
     width: 1150,
     height: 920,
     autoHideMenuBar: true,
-    // titleBarStyle: 'hidden',
-    // titleBarOverlay: {
-    //   color: '#003186',
-    //   symbolColor: '#FFFFFF'
-    // },
     webPreferences: {
       preload: path.join(__dirname, 'server/app.js'),
       nodeIntegrationInWorker: true
