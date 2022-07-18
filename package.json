@@ -33,6 +33,7 @@
   "build": {
     "appId": "mapat2",
     "icon": "./client/img/logo.png",
+    "generateUpdatesFilesForAllChannels": true,
     "linux": {
       "target": [
         "AppImage"
