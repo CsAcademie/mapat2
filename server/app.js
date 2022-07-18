@@ -39,8 +39,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
       refreshDownloadFolderPath()
     })
   },
+  searchBetaUpdates: () => {
+    ipcRenderer.invoke('search-beta-updates')
+  },
   startSynchronization: () => startSynchronization(),
-  stopSynchronization: () => stopSynchronization()
+  stopSynchronization: () => stopSynchronization(),
+  cleanOldMaps: () => cleanOldMaps()
 })
 
 // Functions
@@ -69,6 +73,18 @@ stopSynchronization = function () {
   mapToCheckList = []
   mapToDownloadList = []
   maxMapToCheckList = 0
+}
+
+cleanOldMaps = function () {
+  const cleanOldMapsWorker = new Worker(path.join(__dirname, 'workers', 'cleanOldMaps.js'))
+
+  cleanOldMapsWorker.postMessage({path: downloadFolderPath})
+
+  // Get the number of deleted maps
+  cleanOldMapsWorker.onmessage = function(e) {
+    alert(e.data.mapsDeleted + ' cartes ont été supprimées')
+    cleanOldMapsWorker.terminate()
+  }
 }
 
 refreshDownloadFolderPath = function () {
@@ -157,7 +173,7 @@ fileExistCheckerWorker.onmessage = function(e) {
   runFileExistCheckerWorker(false)
 }
 
-// Get is map md5 match
+// Return if local map MD5 match with portal map MD5
 checkMapMd5Worker.onmessage = function(e) {
   if (!e.data.md5Match) {
     mapToDownloadList.push(e.data.map)
@@ -174,7 +190,7 @@ checkMapMd5Worker.onmessage = function(e) {
   countMapToCheckContainerHTML.style.backgroundImage = 'conic-gradient(#003186 '+percent+'%, #2196F3 0)';
 }
 
-// Get is map md5 match
+// Get downloading map progress and message when map download is finished
 mapDownloaderWorker.onmessage = function(e) {
   if (e.data.type === 'downloaded') {
     runMapDownloaderWorker(false)

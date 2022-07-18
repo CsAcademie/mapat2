@@ -1,7 +1,10 @@
+const fs = require('fs')
+const path = require("path");
 const apiURL = 'https://portal.csacademie.fr/api/maps'
-const sortMap = '?itemsPerPage=100&isDeleted=false&_order[played]=ASC&_order[id]=DESC'
+const sortMap = '?itemsPerPage=50&isDeleted=true'
+let deletedMaps = 0
 
-getMaps = function (page) {
+getMapsAndDeleteIt = function (mapsPath, page) {
   let xHttp = new XMLHttpRequest()
 
   xHttp.onreadystatechange = function() {
@@ -11,12 +14,19 @@ getMaps = function (page) {
 
       for (let i in mapList) {
         if (mapList.hasOwnProperty(i)) {
-          postMessage({type: 'map', map: mapList[i]});
+          const mapPath = path.join(mapsPath, mapList[i].name)
+
+          if (fs.existsSync(mapPath)) {
+            deletedMaps++
+            fs.unlinkSync(mapPath)
+          }
         }
       }
 
       if (response['hydra:view'] && response['hydra:view']['hydra:next']) {
-        getMaps(page + 1)
+        getMapsAndDeleteIt(mapsPath, page + 1)
+      } else {
+        postMessage({mapsDeleted: deletedMaps})
       }
     }
   }
@@ -26,5 +36,6 @@ getMaps = function (page) {
 }
 
 onmessage = function(e) {
-  getMaps(1)
+  deletedMaps = 0
+  getMapsAndDeleteIt(e.data.path, 1)
 }

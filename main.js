@@ -24,8 +24,15 @@ const createWindow = () => {
     return dialog.showOpenDialogSync( { properties:["openDirectory"] })
   });
 
+  ipcMain.handle('search-beta-updates', () => {
+    autoUpdater.channel = 'beta'
+    autoUpdater.checkForUpdatesAndNotify();
+  });
+
   // Open dev tools
-  win.webContents.openDevTools()
+  if (process.env.npm_package_version === '0.0.0-dev') {
+    win.webContents.openDevTools()
+  }
 }
 
 app.whenReady().then(() => {
@@ -36,10 +43,6 @@ app.whenReady().then(() => {
       createWindow()
     }
   })
-
-  if (window.localStorage.getItem('updateChannel') === 'beta') {
-    autoUpdater.channel = 'beta'
-  }
 
   autoUpdater.checkForUpdatesAndNotify();
 })

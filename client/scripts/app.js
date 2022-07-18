@@ -1,6 +1,8 @@
 const startButtonHTML = document.getElementById('startButton')
 const stopButtonHTML = document.getElementById('stopButton')
-const changeDownloadFolderButton = document.getElementById('changeDownloadFolderButton')
+const cleanButtonHTML = document.getElementById('cleanButton')
+const changeDownloadFolderButtonHTML = document.getElementById('changeDownloadFolderButton')
+const betaUpdaterButtonHTML = document.getElementById('betaUpdaterButton')
 
 startButtonHTML.addEventListener('click', () => {
   console.log('Click')
@@ -15,8 +17,28 @@ stopButtonHTML.addEventListener('click', () => {
   stopButtonHTML.disabled = true
 })
 
-changeDownloadFolderButton.addEventListener('click', () => {
+changeDownloadFolderButtonHTML.addEventListener('click', () => {
   window.electronAPI.openMapDownloadFolder()
 })
 
+cleanButtonHTML.addEventListener('click', () => {
+  window.electronAPI.cleanOldMaps()
+})
+
+betaUpdaterButtonHTML.addEventListener('change', (ev) => {
+  if (ev.target.checked) {
+    localStorage.setItem('updateChannel', 'beta')
+    window.electronAPI.searchBetaUpdates()
+  } else {
+    localStorage.removeItem('updateChannel')
+  }
+})
+
 window.electronAPI.initialisation()
+
+let updateChannel = localStorage.getItem('updateChannel')
+
+if (updateChannel === 'beta') {
+  betaUpdaterButtonHTML.checked = true
+  window.electronAPI.searchBetaUpdates()
+}

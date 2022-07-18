@@ -89,6 +89,36 @@
             </div>
         </div>
     </div>
+
+    <div id="other">
+        <h2>Divers</h2>
+
+        <div class="block_container">
+            <div class="block">
+                <span class="title">Supprimer les anciennes cartes</span>
+                <div class="separator"></div>
+                <button class="actionButton" id="cleanButton">Supprimer</button>
+                <div class="separator"></div>
+                <span>
+                    Cette action permet de supprimer toutes les cartes n'étant plus utilisées sur le serveur.
+                    Seulement les cartes ayant déjà été sur le serveur CsAcademie sont supprimées.
+                    Il se peut cependant que certaines cartes soient supprimées alors qu'elles sont utilisée sur les matchs compétitifs.
+                    Après avoir lancé cette action, il est recommandé de faire une vérification des fichiers locaux de CSGO dans steam.
+                </span>
+            </div>
+
+            <div class="block">
+                <label class="checkboxContainer title">Télécharger mapat2 en version beta
+                    <input id="betaUpdaterButton" type="checkbox">
+                    <span class="checkboxCheckmark"></span>
+                </label>
+                <div class="separator"></div>
+                <span>
+                    Cette option permet d'inclure les versions BETA lors de la recherche de mises à jour pour le mapat.
+                </span>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="./scripts/app.js"></script>
 </body>
