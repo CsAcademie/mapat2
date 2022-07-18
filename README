@@ -9,5 +9,5 @@
 - Linux: Directement via CI
 - Windows:
 - * Vérifier que privateKey.pfx est présent
-- * npm version XXX
+- * Changer la version dans package.json
 - * ou `GH_TOKEN=xxx npm run publish-win`
