@@ -18,15 +18,20 @@ let checkMapMd5 = false
 let downloadMaps = false
 
 // Load workers
-const mapFinderWorker = new Worker(path.join(__dirname, 'workers', 'mapFinder.js'))
-const fileExistCheckerWorker = new Worker(path.join(__dirname, 'workers', 'fileExistChecker.js'))
-const checkMapMd5Worker = new Worker(path.join(__dirname, 'workers', 'checkMapMd5.js'))
-const mapDownloaderWorker = new Worker(path.join(__dirname, 'workers', 'mapDownloader.js'))
+let mapFinderWorker = null
+let fileExistCheckerWorker = null
+let checkMapMd5Worker = null
+let mapDownloaderWorker = null
 
 // Expose api
 contextBridge.exposeInMainWorld('electronAPI', {
   initialisation: () => {
-    document.getElementById('mapat_version').innerHTML = process.env.npm_package_version
+    const promise = ipcRenderer.invoke('get-version')
+
+    promise.then((result) => {
+      document.getElementById('mapat_version').innerHTML = result
+    })
+
     downloadFolderPath = window.localStorage.getItem('downloadPath')
 
     refreshDownloadFolderPath()
@@ -62,6 +67,8 @@ startSynchronization = function () {
   fileExistCheckerRunning = false
   checkMapMd5Running = false
   mapDownloaderRunning = false
+
+  initMapFinderWorker()
   mapFinderWorker.postMessage(null)
 }
 
@@ -110,6 +117,7 @@ runFileExistCheckerWorker = function (newProcess) {
   }
 
   fileExistCheckerRunning = true
+  initFileExistCheckerWorker()
   fileExistCheckerWorker.postMessage({map: (mapList.splice(0, 1))[0], path: downloadFolderPath})
 }
 
@@ -129,6 +137,7 @@ runCheckMapMd5Worker = function (newProcess) {
 
   checkingMapHTML.innerHTML = map.name
   checkMapMd5Running = true
+  initCheckMapMd5Worker()
   checkMapMd5Worker.postMessage({map: map, path: downloadFolderPath})
 }
 
@@ -144,65 +153,90 @@ runMapDownloaderWorker = function (newProcess) {
   }
 
   mapDownloaderRunning = true
+  initMapDownloaderWorker()
   mapDownloaderWorker.postMessage({map: (mapToDownloadList.splice(0, 1))[0], path: downloadFolderPath})
 }
 
-// Get map list and check if maps exists
-mapFinderWorker.onmessage = function(e) {
-  if (e.data.type === 'map') {
-    mapList.push(e.data.map)
-    runFileExistCheckerWorker(true)
-  }
-}
+initMapFinderWorker = function () {
+  if (mapFinderWorker === null) {
+    mapFinderWorker = new Worker(path.join(__dirname, 'workers', 'mapFinder.js'))
 
-// Get result if map exists
-fileExistCheckerWorker.onmessage = function(e) {
-  if (e.data.mapExists) {
-    mapToCheckList.push(e.data.map)
-
-    if (mapToCheckList.length > maxMapToCheckList) {
-      maxMapToCheckList =mapToCheckList.length
+    // Get map list and check if maps exists
+    mapFinderWorker.onmessage = function(e) {
+      if (e.data.type === 'map') {
+        mapList.push(e.data.map)
+        runFileExistCheckerWorker(true)
+      }
     }
-
-    runCheckMapMd5Worker(true)
-  } else {
-    mapToDownloadList.push(e.data.map)
-    runMapDownloaderWorker(true)
   }
-
-  runFileExistCheckerWorker(false)
 }
 
-// Return if local map MD5 match with portal map MD5
-checkMapMd5Worker.onmessage = function(e) {
-  if (!e.data.md5Match) {
-    mapToDownloadList.push(e.data.map)
-    runMapDownloaderWorker(true)
+initFileExistCheckerWorker = function () {
+  if (fileExistCheckerWorker === null) {
+    fileExistCheckerWorker = new Worker(path.join(__dirname, 'workers', 'fileExistChecker.js'))
+
+    // Get result if map exists
+    fileExistCheckerWorker.onmessage = function(e) {
+      if (e.data.mapExists) {
+        mapToCheckList.push(e.data.map)
+
+        if (mapToCheckList.length > maxMapToCheckList) {
+          maxMapToCheckList =mapToCheckList.length
+        }
+
+        runCheckMapMd5Worker(true)
+      } else {
+        mapToDownloadList.push(e.data.map)
+        runMapDownloaderWorker(true)
+      }
+
+      runFileExistCheckerWorker(false)
+    }
   }
-
-  runCheckMapMd5Worker(false)
-
-  const countMapToCheckHTML = document.getElementById('countMapToCheck')
-  const countMapToCheckContainerHTML = document.getElementById('countMapToCheckContainer')
-  const percent = (maxMapToCheckList / mapToCheckList.length) * 100
-
-  countMapToCheckHTML.innerHTML = mapToCheckList.length.toString()
-  countMapToCheckContainerHTML.style.backgroundImage = 'conic-gradient(#003186 '+percent+'%, #2196F3 0)';
 }
 
-// Get downloading map progress and message when map download is finished
-mapDownloaderWorker.onmessage = function(e) {
-  if (e.data.type === 'downloaded') {
-    runMapDownloaderWorker(false)
+initCheckMapMd5Worker = function () {
+  if (checkMapMd5Worker === null) {
+    checkMapMd5Worker = new Worker(path.join(__dirname, 'workers', 'checkMapMd5.js'))
+
+    // Return if local map MD5 match with portal map MD5
+    checkMapMd5Worker.onmessage = function(e) {
+      if (!e.data.md5Match) {
+        mapToDownloadList.push(e.data.map)
+        runMapDownloaderWorker(true)
+      }
+
+      runCheckMapMd5Worker(false)
+
+      const countMapToCheckHTML = document.getElementById('countMapToCheck')
+      const countMapToCheckContainerHTML = document.getElementById('countMapToCheckContainer')
+      const percent = (maxMapToCheckList / mapToCheckList.length) * 100
+
+      countMapToCheckHTML.innerHTML = mapToCheckList.length.toString()
+      countMapToCheckContainerHTML.style.backgroundImage = 'conic-gradient(#003186 '+percent+'%, #2196F3 0)';
+    }
   }
+}
 
-  if (e.data.type === 'progress') {
-    const countMapToDownloadHTML = document.getElementById('countMapToDownload')
-    const countMapToDownloadContainerHTML = document.getElementById('countMapToDownloadContainer')
-    const downloadingMapHTML = document.getElementById('downloadingMap')
+initMapDownloaderWorker = function () {
+  if (mapDownloaderWorker === null) {
+    mapDownloaderWorker = new Worker(path.join(__dirname, 'workers', 'mapDownloader.js'))
 
-    countMapToDownloadHTML.innerHTML = mapToDownloadList.length.toString()
-    countMapToDownloadContainerHTML.style.backgroundImage = 'conic-gradient(#003186 '+e.data.percent+'%, #2196F3 0)';
-    downloadingMapHTML.innerHTML = e.data.mapName
+    // Get downloading map progress and message when map download is finished
+    mapDownloaderWorker.onmessage = function(e) {
+      if (e.data.type === 'downloaded') {
+        runMapDownloaderWorker(false)
+      }
+
+      if (e.data.type === 'progress') {
+        const countMapToDownloadHTML = document.getElementById('countMapToDownload')
+        const countMapToDownloadContainerHTML = document.getElementById('countMapToDownloadContainer')
+        const downloadingMapHTML = document.getElementById('downloadingMap')
+
+        countMapToDownloadHTML.innerHTML = mapToDownloadList.length.toString()
+        countMapToDownloadContainerHTML.style.backgroundImage = 'conic-gradient(#003186 '+e.data.percent+'%, #2196F3 0)';
+        downloadingMapHTML.innerHTML = e.data.mapName
+      }
+    }
   }
 }

@@ -4,14 +4,14 @@ const { autoUpdater } = require("electron-updater")
 
 const createWindow = () => {
   const win = new BrowserWindow({
-    width: 950,
-    height: 780,
+    width: 1150,
+    height: 920,
     autoHideMenuBar: true,
-    titleBarStyle: 'hidden',
-    titleBarOverlay: {
-      color: '#003186',
-      symbolColor: '#FFFFFF'
-    },
+    // titleBarStyle: 'hidden',
+    // titleBarOverlay: {
+    //   color: '#003186',
+    //   symbolColor: '#FFFFFF'
+    // },
     webPreferences: {
       preload: path.join(__dirname, 'server/app.js'),
       nodeIntegrationInWorker: true
@@ -29,6 +29,10 @@ const createWindow = () => {
     autoUpdater.checkForUpdatesAndNotify();
   });
 
+  ipcMain.handle('get-version', () => {
+    return app.getVersion()
+  });
+
   // Open dev tools
   if (process.env.npm_package_version === '0.0.0-dev') {
     win.webContents.openDevTools()
@@ -43,6 +47,10 @@ app.whenReady().then(() => {
       createWindow()
     }
   })
+
+  if (app.getVersion().includes('-beta')) {
+    autoUpdater.channel = 'beta'
+  }
 
   autoUpdater.checkForUpdatesAndNotify();
 })
