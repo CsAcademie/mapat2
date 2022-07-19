@@ -1,14 +1,28 @@
-# You can override the included template(s) by including variable overrides
-# See https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
-# Note that environment variables can be set in several places
-# See https://docs.gitlab.com/ee/ci/variables/#priority-of-environment-variables
 include:
-- template: Dependency-Scanning.gitlab-ci.yml
-- template: Security/SAST.gitlab-ci.yml
+  - template: Dependency-Scanning.gitlab-ci.yml
+  - template: Security/SAST.gitlab-ci.yml
+
 stages:
-- test
+  - build
+  - test
+
 sast:
   variables:
     SAST_DEFAULT_ANALYZERS: brakeman, bandit, eslint, flawfinder, kubesec, nodejs-scan,
       gosec, phpcs-security-audit, pmd-apex, security-code-scan, sobelow, spotbugs
   stage: test
+
+build-linux:
+  stage: build
+  tags:
+    - docker-executor
+  only:
+    - tags
+  when: manual
+  image: electronuserland/builder:16
+  script:
+    - git config --global user.email "CI@csacademie.fr"
+    - git config --global user.name "CI CsAcademie"
+    - npm version $CI_COMMIT_TAG --allow-same-version
+    - npm install
+    - npm run publish-linux
