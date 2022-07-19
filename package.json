@@ -1,54 +1,55 @@
 {
   "name": "mapat2",
-  "productName": "mapat2",
-  "version": "1.7.1",
+  "version": "0.0.0-dev",
   "description": "Téléchargeur de cartes CsAcademie",
-  "main": "src/index.js",
+  "main": "main.js",
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder -wl",
-    "dist-win": "electron-builder --win",
-    "publish": "electron-builder -wl --publish always",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "publish-linux": "electron-builder --linux --publish always",
-    "publish-win": "electron-builder --win --publish always",
-    "postinstall": "electron-builder install-app-deps",
-    "release": "electron-builder"
+    "publish-win": "electron-builder --win --publish always"
   },
   "repository": "github:CsAcademie/mapat2",
   "keywords": [
     "CsAcademie"
   ],
-  "author": "Azzod",
+  "author": "Codazzi Stéphane",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CsAcademie/mapat2/issues"
+  },
+  "homepage": "https://github.com/CsAcademie/mapat2#readme",
   "devDependencies": {
-    "electron": "^13.5.1",
-    "electron-builder": "^22.11.7"
+    "electron": "^19.0.8",
+    "electron-builder": "^23.1.0"
   },
   "dependencies": {
     "decompress": "^4.2.1",
     "decompress-bzip2": "^4.0.0",
     "decompress-zip": "^0.3.3",
-    "electron-log": "^4.3.1",
-    "electron-updater": "^4.3.8",
+    "electron-updater": "^5.0.5",
     "md5-file": "^5.0.0",
     "request": "^2.88.2"
   },
   "build": {
     "appId": "mapat2",
-    "icon": "./src/logo2.png",
+    "icon": "./client/img/logo.png",
+    "generateUpdatesFilesForAllChannels": true,
     "linux": {
       "target": [
         "AppImage"
-      ]
+      ],
+      "category": "Game"
     },
     "win": {
       "target": [
         "nsis"
       ],
       "verifyUpdateCodeSignature": false,
-      "publisherName": "Azzod",
-      "certificateFile": "MySPC.pfx",
+      "publisherName": "Codazzi Stéphane",
+      "certificateFile": "privateKey.pfx",
       "publish": [
         "github"
       ]
