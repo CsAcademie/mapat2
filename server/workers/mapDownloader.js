@@ -29,12 +29,24 @@ downloadFile = function (fileUrl, targetPath, progressCallback, endCallback) {
 
 onmessage = function(e) {
   console.log('Download: ' + e.data.map.name)
-  const mapPath = path.join(e.data.path, e.data.map.name)
+  let mapPath = path.join(e.data.path, e.data.map.name)
+  let unCompressType = ''
+
+  if (e.data.compressed) {
+    const tempFolder = path.join(e.data.path, 'mapat-temp')
+
+    if (!fs.existsSync(tempFolder)) {
+      fs.mkdir(tempFolder, () => {})
+    }
+
+    unCompressType = (e.data.map.size > 150000000) ? '.zip' : '.bz2'
+    mapPath = path.join(tempFolder, e.data.map.name)
+  }
 
   downloadFile(
-    downloadUrl + e.data.map.name,
-    mapPath,
+    downloadUrl + e.data.map.name + unCompressType,
+    mapPath + unCompressType,
     (percent) => {postMessage({type: 'progress', percent, mapName: e.data.map.name});},
-    () => {postMessage({type: 'downloaded'});}
+    () => {postMessage({type: 'downloaded', compressed: e.data.compressed, unCompressType, map: e.data.map});}
   )
 }

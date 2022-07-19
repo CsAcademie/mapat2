@@ -5,7 +5,6 @@ const changeDownloadFolderButtonHTML = document.getElementById('changeDownloadFo
 const betaUpdaterButtonHTML = document.getElementById('betaUpdaterButton')
 
 startButtonHTML.addEventListener('click', () => {
-  console.log('Click')
   window.electronAPI.startSynchronization()
   startButtonHTML.disabled = true
   stopButtonHTML.disabled = false

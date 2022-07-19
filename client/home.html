@@ -43,7 +43,7 @@
             </div>
 
             <div class="block">
-                <label class="checkboxContainer title">Télécharger les cartes
+                <label class="checkboxContainer title">Téléchargement
                     <input id="map_downloading" type="checkbox" checked="checked">
                     <span class="checkboxCheckmark"></span>
                 </label>
@@ -53,6 +53,18 @@
                     Les cartes déjà existantes ne seront pas re-téléchargées.
                 </span>
             </div>
+
+            <div class="block">
+                <label class="checkboxContainer title">Décompression
+                    <input id="download_compressed" type="checkbox">
+                    <span class="checkboxCheckmark"></span>
+                </label>
+                <div class="separator"></div>
+                <span>
+                    Les cartes sont téléchargées en version compressée.
+                    Cette option permet d'accélérer le téléchargement sur les connexion lentes mais peut ralentir l'ordinateur pendant la décompression.
+                </span>
+            </div>
         </div>
     </div>
 
@@ -60,6 +72,12 @@
         <h2>Synchronisation</h2>
 
         <div class="block_container">
+            <div class="block centered">
+                <button class="actionButton" id="startButton">Démarrer</button>
+                <div class="separator"></div>
+                <button class="actionButton" id="stopButton" disabled>Arrêter</button>
+            </div>
+
             <div class="block">
                 <span class="title">Vérifications</span>
                 <div class="separator"></div>
@@ -69,12 +87,6 @@
                     </div>
                     <div id="checkingMap"></div>
                 </div>
-            </div>
-
-            <div class="block centered">
-                <button class="actionButton" id="startButton">Démarrer</button>
-                <div class="separator"></div>
-                <button class="actionButton" id="stopButton" disabled>Arrêter</button>
             </div>
 
             <div class="block">
@@ -87,6 +99,17 @@
                     <div id="downloadingMap"></div>
                 </div>
             </div>
+
+            <div class="block">
+                <span class="title">Décompression</span>
+                <div class="separator"></div>
+                <div class="centered">
+                    <div id="countMapToUnCompressContainer" class="circle">
+                        <div id="countMapToUnCompress" class="inner">-</div>
+                    </div>
+                    <div id="unCompressingMap"></div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -94,21 +117,20 @@
         <h2>Divers</h2>
 
         <div class="block_container">
-            <div class="block">
+            <div class="block block-s2">
                 <span class="title">Supprimer les anciennes cartes</span>
                 <div class="separator"></div>
                 <button class="actionButton" id="cleanButton">Supprimer</button>
                 <div class="separator"></div>
                 <span>
-                    Cette action permet de supprimer toutes les cartes n'étant plus utilisées sur le serveur.
+                    Cette action permet de supprimer toutes les cartes n'étant plus utilisées sur le serveur CsAcademie.
                     Seulement les cartes ayant déjà été sur le serveur CsAcademie sont supprimées.
-                    Il se peut cependant que certaines cartes soient supprimées alors qu'elles sont utilisée sur les matchs compétitifs.
-                    Après avoir lancé cette action, il est recommandé de faire une vérification des fichiers locaux de CSGO dans steam.
+                    Il est recommandé de faire une vérification des fichiers locaux de CSGO dans steam.
                 </span>
             </div>
 
             <div class="block">
-                <label class="checkboxContainer title">Télécharger mapat2 en version beta
+                <label class="checkboxContainer title">Versions beta
                     <input id="betaUpdaterButton" type="checkbox">
                     <span class="checkboxCheckmark"></span>
                 </label>

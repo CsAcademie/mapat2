@@ -1,27 +1,33 @@
 const path = require('path')
 const { contextBridge, ipcRenderer } = require('electron')
+const fs = require("fs");
 
 // worker variables
 let mapList = []
 let mapToCheckList = []
 let maxMapToCheckList = 0
 let mapToDownloadList = []
+let mapToUnCompressList = []
+let maxMapToUnCompressList = 0
 
 // Worker process
 let fileExistCheckerRunning = false
 let checkMapMd5Running = false
 let mapDownloaderRunning = false
+let unCompressMapRunning = false
 
 // Worker settings
 let downloadFolderPath = null
 let checkMapMd5 = false
 let downloadMaps = false
+let downloadCompressed = false
 
 // Load workers
 let mapFinderWorker = null
 let fileExistCheckerWorker = null
 let checkMapMd5Worker = null
 let mapDownloaderWorker = null
+let unCompressMapWorker = null
 
 // Expose api
 contextBridge.exposeInMainWorld('electronAPI', {
@@ -33,8 +39,14 @@ contextBridge.exposeInMainWorld('electronAPI', {
     })
 
     downloadFolderPath = window.localStorage.getItem('downloadPath')
-
     refreshDownloadFolderPath()
+
+    // Clean temp folder
+    const tempFolder = path.join(downloadFolderPath, 'mapat-temp')
+
+    if (fs.existsSync(tempFolder)) {
+      fs.rmSync(tempFolder, { recursive: true, force: true })
+    }
   },
   openMapDownloadFolder: () => {
     const promise = ipcRenderer.invoke('open-dialog-download-folder')
@@ -56,17 +68,22 @@ contextBridge.exposeInMainWorld('electronAPI', {
 startSynchronization = function () {
   const mapVerificationHTML = document.getElementById('map_verification')
   const mapDownloadingHTML = document.getElementById('map_downloading')
+  const downloadCompressedHTML = document.getElementById('download_compressed')
 
   checkMapMd5 = mapVerificationHTML.checked
   downloadMaps = mapDownloadingHTML.checked
+  downloadCompressed = downloadCompressedHTML.checked
 
   mapList = []
   mapToCheckList = []
   mapToDownloadList = []
+  mapToUnCompressList = []
   maxMapToCheckList = 0
+  maxMapToUnCompressList = 0
   fileExistCheckerRunning = false
   checkMapMd5Running = false
   mapDownloaderRunning = false
+  unCompressMapRunning = false
 
   initMapFinderWorker()
   mapFinderWorker.postMessage(null)
@@ -79,7 +96,7 @@ stopSynchronization = function () {
   mapList = []
   mapToCheckList = []
   mapToDownloadList = []
-  maxMapToCheckList = 0
+  mapToUnCompressList = []
 }
 
 cleanOldMaps = function () {
@@ -122,6 +139,13 @@ runFileExistCheckerWorker = function (newProcess) {
 }
 
 runCheckMapMd5Worker = function (newProcess) {
+  const countMapToCheckContainerHTML = document.getElementById('countMapToCheckContainer')
+  const countMapToCheckHTML = document.getElementById('countMapToCheck')
+  const percent = (maxMapToCheckList > 0) ? ((maxMapToCheckList - mapToCheckList.length) / maxMapToCheckList) * 100 : 0
+
+  countMapToCheckHTML.innerHTML = mapToCheckList.length.toString()
+  countMapToCheckContainerHTML.style.backgroundImage = 'conic-gradient(#003186 '+percent+'%, #2196F3 0)';
+
   if (!checkMapMd5 || (checkMapMd5Running && newProcess)) {
     return
   }
@@ -137,6 +161,7 @@ runCheckMapMd5Worker = function (newProcess) {
 
   checkingMapHTML.innerHTML = map.name
   checkMapMd5Running = true
+
   initCheckMapMd5Worker()
   checkMapMd5Worker.postMessage({map: map, path: downloadFolderPath})
 }
@@ -154,7 +179,49 @@ runMapDownloaderWorker = function (newProcess) {
 
   mapDownloaderRunning = true
   initMapDownloaderWorker()
-  mapDownloaderWorker.postMessage({map: (mapToDownloadList.splice(0, 1))[0], path: downloadFolderPath})
+  mapDownloaderWorker.postMessage(
+    {
+      map: (mapToDownloadList.splice(0, 1))[0],
+      path: downloadFolderPath,
+      compressed: downloadCompressed
+    }
+  )
+}
+
+runUnCompressMapWorker = function (newProcess) {
+  const countMapToUnCompressHTML = document.getElementById('countMapToUnCompress')
+  const countMapToUnCompressContainerHTML = document.getElementById('countMapToUnCompressContainer')
+  const percent = (maxMapToUnCompressList > 0) ? ((maxMapToUnCompressList - mapToUnCompressList.length) / maxMapToUnCompressList) * 100 : 0
+
+  countMapToUnCompressHTML.innerHTML = mapToUnCompressList.length.toString()
+  countMapToUnCompressContainerHTML.style.backgroundImage = 'conic-gradient(#003186 '+percent+'%, #2196F3 0)';
+
+  if (!downloadCompressed || (unCompressMapRunning && newProcess)) {
+    return
+  }
+
+  if (mapToUnCompressList.length === 0) {
+    unCompressMapRunning = false
+
+    return
+  }
+
+  const item = (mapToUnCompressList.splice(0, 1))[0]
+  const unCompressingMapHTML = document.getElementById('unCompressingMap')
+  const map = item.map
+
+  unCompressingMapHTML.innerHTML = map.name
+  unCompressMapRunning = true
+
+  initUnCompressMapWorker()
+
+  unCompressMapWorker.postMessage(
+    {
+      map: map,
+      unCompressType: item.unCompressType,
+      path: downloadFolderPath
+    }
+  )
 }
 
 initMapFinderWorker = function () {
@@ -177,17 +244,17 @@ initFileExistCheckerWorker = function () {
 
     // Get result if map exists
     fileExistCheckerWorker.onmessage = function(e) {
-      if (e.data.mapExists) {
+      if (!e.data.mapExists) {
+        mapToDownloadList.push(e.data.map)
+        runMapDownloaderWorker(true)
+      } else if (checkMapMd5) {
         mapToCheckList.push(e.data.map)
 
         if (mapToCheckList.length > maxMapToCheckList) {
-          maxMapToCheckList =mapToCheckList.length
+          maxMapToCheckList = mapToCheckList.length
         }
 
         runCheckMapMd5Worker(true)
-      } else {
-        mapToDownloadList.push(e.data.map)
-        runMapDownloaderWorker(true)
       }
 
       runFileExistCheckerWorker(false)
@@ -206,14 +273,8 @@ initCheckMapMd5Worker = function () {
         runMapDownloaderWorker(true)
       }
 
+      document.getElementById('checkingMap').innerHTML = ''
       runCheckMapMd5Worker(false)
-
-      const countMapToCheckHTML = document.getElementById('countMapToCheck')
-      const countMapToCheckContainerHTML = document.getElementById('countMapToCheckContainer')
-      const percent = (maxMapToCheckList / mapToCheckList.length) * 100
-
-      countMapToCheckHTML.innerHTML = mapToCheckList.length.toString()
-      countMapToCheckContainerHTML.style.backgroundImage = 'conic-gradient(#003186 '+percent+'%, #2196F3 0)';
     }
   }
 }
@@ -226,6 +287,17 @@ initMapDownloaderWorker = function () {
     mapDownloaderWorker.onmessage = function(e) {
       if (e.data.type === 'downloaded') {
         runMapDownloaderWorker(false)
+
+        if (e.data.compressed) {
+          mapToUnCompressList.push({map: e.data.map, unCompressType: e.data.unCompressType})
+
+          if (mapToUnCompressList.length > maxMapToUnCompressList) {
+            maxMapToUnCompressList = mapToUnCompressList.length
+          }
+
+          document.getElementById('downloadingMap').innerHTML = ''
+          runUnCompressMapWorker(true)
+        }
       }
 
       if (e.data.type === 'progress') {
@@ -237,6 +309,18 @@ initMapDownloaderWorker = function () {
         countMapToDownloadContainerHTML.style.backgroundImage = 'conic-gradient(#003186 '+e.data.percent+'%, #2196F3 0)';
         downloadingMapHTML.innerHTML = e.data.mapName
       }
+    }
+  }
+}
+
+initUnCompressMapWorker = function () {
+  if (unCompressMapWorker === null) {
+    unCompressMapWorker = new Worker(path.join(__dirname, 'workers', 'unCompressMap.js'))
+
+    // Get downloading map progress and message when map download is finished
+    unCompressMapWorker.onmessage = function(e) {
+      document.getElementById('unCompressingMap').innerHTML = ''
+      runUnCompressMapWorker(false)
     }
   }
 }

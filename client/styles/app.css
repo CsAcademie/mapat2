@@ -43,7 +43,10 @@ h2 {
     background-color: #333;
     padding: 10px;
     margin: 10px;
-    min-width: 250px;
+    width: 250px;
+}
+.block.block-s2 {
+    width: 506px;
 }
 
 .block .title {
