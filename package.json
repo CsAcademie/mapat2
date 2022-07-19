@@ -26,6 +26,9 @@
     "electron-builder": "^23.1.0"
   },
   "dependencies": {
+    "decompress": "^4.2.1",
+    "decompress-bzip2": "^4.0.0",
+    "decompress-zip": "^0.3.3",
     "electron-updater": "^5.0.5",
     "md5-file": "^5.0.0",
     "request": "^2.88.2"
