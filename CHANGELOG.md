@@ -1,3 +1,7 @@
+### 2.1.1 - 2022-10-10
+
+- Les cartes dans les cycles officiels sont ignorées par le mapat
+
 ### 2.1.0 - 2022-10-10
 
 - Mise à jour d'ElectronJS vers la version 21

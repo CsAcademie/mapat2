@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require("path");
 const apiURL = 'https://portal.csacademie.fr/api/maps'
-const sortMap = '?itemsPerPage=50&isDeleted=true'
+const sortMap = '?itemsPerPage=50&isDeleted=true&isOfficial=false'
 let deletedMaps = 0
 
 getMapsAndDeleteIt = function (mapsPath, page) {
