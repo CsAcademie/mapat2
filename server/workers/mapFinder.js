@@ -1,5 +1,5 @@
 const apiURL = 'https://portal.csacademie.fr/api/maps'
-const sortMap = '?itemsPerPage=100&isDeleted=false&_order[played]=ASC&_order[id]=DESC'
+const sortMap = '?itemsPerPage=100&isOfficial=false&isDeleted=false&_order[played]=ASC&_order[id]=DESC'
 
 getMaps = function (page) {
   let xHttp = new XMLHttpRequest()
