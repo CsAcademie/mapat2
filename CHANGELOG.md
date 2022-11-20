@@ -1,3 +1,7 @@
+### 2.1.2 - 2022-11-20
+
+- Mise à jour des dépendances
+
 ### 2.1.1 - 2022-10-10
 
 - Les cartes dans les cycles officiels sont ignorées par le mapat
