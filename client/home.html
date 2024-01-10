@@ -6,8 +6,6 @@
     <title>Mapat - CsAcademie</title>
 
     <link href="./styles/app.css" rel="stylesheet">
-    <link href="./styles/checkboxes.css" rel="stylesheet">
-    <link href="./styles/circleProgress.css" rel="stylesheet">
 </head>
 <body>
 <div id="header">
@@ -15,133 +13,25 @@
     <h1>CsAcademie - Mapat <span id="mapat_version">v0.0.0</span></h1>
 </div>
 
-<div id="content">
+<div id="disabledContent">
+    <p>
+        Le mapat n'est plus nécessaire pour télécharger les cartes.
+    </p>
+    <p>
+        Vous pouvez vous abonner à notre collection steam en vous rendant sur le workshop :
+    </p>
 
-    <div id="options">
-        <h2>Options</h2>
+    <p>
+        https://steamcommunity.com/sharedfiles/filedetails/?id=708031527
+    </p>
 
-        <div class="block_container">
-            <div class="block">
-                <span class="title">Dossier local</span><br>
-                <div class="separator"></div>
-                <span>Les cartes sont téléchargées dans le dossier :</span><br>
-                <div class="separator"></div>
-                <img id="changeDownloadFolderButton" class="imgButton" src="./img/briefcase-arrow-up-down.svg" alt="change-folder" title="Changer de dossier" />
-                <span id="download_folder_path">Non défini</span>
-            </div>
-
-            <div class="block">
-                <label class="checkboxContainer title">Vérifier les cartes
-                    <input id="map_verification" type="checkbox" checked="checked">
-                    <span class="checkboxCheckmark"></span>
-                </label>
-                <div class="separator"></div>
-                <span>
-                    Les cartes existantes qui ne correspondent pas à la même version sur notre serveur sont supprimées. <br>
-                    Cette option permet d'éviter l'erreur "your map differs from the servers".
-                </span>
-            </div>
-
-            <div class="block">
-                <label class="checkboxContainer title">Téléchargement
-                    <input id="map_downloading" type="checkbox" checked="checked">
-                    <span class="checkboxCheckmark"></span>
-                </label>
-                <div class="separator"></div>
-                <span>
-                    Les cartes du serveur sont téléchargées sur votre ordinateur pour éviter de devoir attendre entre les changements de carte.<br/>
-                    Les cartes déjà existantes ne seront pas re-téléchargées.
-                </span>
-            </div>
-
-            <div class="block">
-                <label class="checkboxContainer title">Décompression
-                    <input id="download_compressed" type="checkbox">
-                    <span class="checkboxCheckmark"></span>
-                </label>
-                <div class="separator"></div>
-                <span>
-                    Les cartes sont téléchargées en version compressée.
-                    Cette option permet d'accélérer le téléchargement sur les connexion lentes mais peut ralentir l'ordinateur pendant la décompression.
-                </span>
-            </div>
-        </div>
-    </div>
-
-    <div id="synchronization">
-        <h2>Synchronisation</h2>
-
-        <div class="block_container">
-            <div class="block centered">
-                <button class="actionButton" id="startButton">Démarrer</button>
-                <div class="separator"></div>
-                <button class="actionButton" id="stopButton" disabled>Arrêter</button>
-            </div>
-
-            <div class="block">
-                <span class="title">Vérifications</span>
-                <div class="separator"></div>
-                <div class="centered">
-                    <div id="countMapToCheckContainer" class="circle">
-                        <div id="countMapToCheck" class="inner">-</div>
-                    </div>
-                    <div id="checkingMap"></div>
-                </div>
-            </div>
-
-            <div class="block">
-                <span class="title">Téléchargements</span>
-                <div class="separator"></div>
-                <div class="centered">
-                    <div id="countMapToDownloadContainer" class="circle">
-                        <div id="countMapToDownload" class="inner">-</div>
-                    </div>
-                    <div id="downloadingMap"></div>
-                </div>
-            </div>
-
-            <div class="block">
-                <span class="title">Décompression</span>
-                <div class="separator"></div>
-                <div class="centered">
-                    <div id="countMapToUnCompressContainer" class="circle">
-                        <div id="countMapToUnCompress" class="inner">-</div>
-                    </div>
-                    <div id="unCompressingMap"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="other">
-        <h2>Divers</h2>
-
-        <div class="block_container">
-            <div class="block block-s2">
-                <span class="title">Supprimer les anciennes cartes</span>
-                <div class="separator"></div>
-                <button class="actionButton" id="cleanButton">Supprimer</button>
-                <div class="separator"></div>
-                <span>
-                    Cette action permet de supprimer toutes les cartes n'étant plus utilisées sur le serveur CsAcademie.
-                    Seulement les cartes ayant déjà été sur le serveur CsAcademie sont supprimées.
-                    Il est recommandé de faire une vérification des fichiers locaux de CSGO dans steam.
-                </span>
-            </div>
-
-            <div class="block">
-                <label class="checkboxContainer title">Versions beta
-                    <input id="betaUpdaterButton" type="checkbox">
-                    <span class="checkboxCheckmark"></span>
-                </label>
-                <div class="separator"></div>
-                <span>
-                    Cette option permet d'inclure les versions BETA lors de la recherche de mises à jour pour le mapat.
-                </span>
-            </div>
-        </div>
-    </div>
+    <p>
+        Vous pouvez désinstaller le mapat de votre ordinateur.
+    </p>
+    <p>
+        Merci d'avoir utilisé le Mapat !
+    </p>
 </div>
-<script src="./scripts/app.js"></script>
+
 </body>
 </html>

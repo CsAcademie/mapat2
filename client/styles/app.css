@@ -10,6 +10,15 @@ h2 {
     margin-bottom: 10px;
 }
 
+#disabledContent {
+    width: 500px;
+    padding: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    background-color: darkslategrey;
+}
+
 #header {
     width: 100%;
     background-color: #003186;
